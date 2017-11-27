@@ -2,13 +2,13 @@
 //  VendingMachine.swift
 //  VendingMachine
 //
-//  Created by Screencast on 12/6/16.
-//  Copyright © 2016 Treehouse Island, Inc. All rights reserved.
+//  Created by Karthik Palusa on 11/26/17.
+//  Copyright © 2016 Karthik Palusa, All rights reserved.
 //
 
 import Foundation
 
-enum VendingSelection {
+enum VendingSelection: String {
     case soda
     case dietSoda
     case chips
@@ -41,6 +41,48 @@ protocol VendingMachine {
 struct Item: VendingItem {
     let price: Double
     var quantity: Int
+}
+
+enum InventoryError: Error {
+    case invalidResource
+    case conversionFailure
+    case invalidSelection
+}
+
+class PlistCoverter {
+    static func dictionary(fromFile name: String, ofType type: String) throws -> [String: AnyObject] {
+        guard let path = Bundle.main.path(forResource: name, ofType: type) else {
+            throw InventoryError.invalidResource
+        }
+        
+        guard let dictionary = NSDictionary(contentsOfFile: path) as? [String: AnyObject] else {
+            throw InventoryError.conversionFailure
+        }
+        
+        return dictionary
+    }
+}
+
+class InventoryUnarchiver {
+    static func vendingInventory(fromDictionary dictionary: [String: AnyObject]) throws -> [VendingSelection: VendingItem] {
+        
+        var inventory: [VendingSelection: VendingItem] = [:]
+        
+        for (key, value) in dictionary {
+            if let itemDictionary = value as? [String: Any], let price = itemDictionary["price"] as? Double, let quantity = itemDictionary["quanitity"] as? Int {
+                let item = Item(price: price, quantity: quantity)
+                
+                guard let selection = VendingSelection(rawValue: key) else {
+                    throw InventoryError.invalidSelection
+                }
+                
+                inventory.updateValue(item, forKey: selection)
+            }
+        }
+        
+        
+        return inventory
+    }
 }
 
 class FoodVendingMachine: VendingMachine {

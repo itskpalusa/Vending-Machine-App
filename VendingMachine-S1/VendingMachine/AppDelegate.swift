@@ -2,8 +2,8 @@
 //  AppDelegate.swift
 //  VendingMachine
 //
-//  Created by Pasan Premaratne on 12/1/16.
-//  Copyright © 2016 Treehouse Island, Inc. All rights reserved.
+//  Created by Karthik Palusa on 11/26/17.
+//  Copyright © 2016 Karthik Palusa, All rights reserved.
 //
 
 import UIKit
