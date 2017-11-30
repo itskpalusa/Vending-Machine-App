@@ -81,6 +81,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             if let indexPath = collectionView.indexPathsForSelectedItems?.first {
                 collectionView.deselectItem(at: indexPath, animated: true)
                 updateCell(having: indexPath, selected: false)
+                
             }
         } else {
             // FIXME: Alert user to no selection
@@ -92,6 +93,14 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         totalLabel.text = "$00.00"
         priceLabel.text = "$0.00"
     }
+    
+    @IBAction func updateQuantity(_ sender: UIStepper) {
+        print(sender.value)
+    }
+    
+    
+    
+    
     // MARK: UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
